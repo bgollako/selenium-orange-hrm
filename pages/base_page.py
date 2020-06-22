@@ -4,23 +4,26 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class BasePage:
 
-    URL = "https://opensource-demo.orangehrmlive.com/"
-
-    def __init__(self):
-        self.driver = webdriver.Chrome()
-        self.driver.get(BasePage.URL)
+    def __init__(self, driver):
+        self.driver = driver
 
     def load_page(self, url):
         self.driver.get(url)
 
-    def populate_field_by_id(self, id, value):
-        element = self.driver.find_element_by_id(id)
+    def populate_field(self, locator, value):
+        element = self.driver.find_element(*locator)
         element.send_keys(value)
 
-    def click_btn(self, id):
-        element = self.driver.find_element_by_id(id)
+    def get_field(self, locator):
+        return self.driver.find_element(*locator)
+
+    def click_btn(self, locator):
+        element = self.driver.find_element(*locator)
         element.click()
 
-    def click_link(self, link_text):
-        for link in self.driver.find_elements_by_link_text(link_text):
+    def get_page_url(self):
+        return self.driver.current_url
+
+    def click_link(self, locator):
+        for link in self.driver.find_elements(*locator):
             link.click()
